@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+echo "Upgrading pip and setuptools globally"
+python3 -m pip install --upgrade pip setuptools
+
 echo "Deleting ComfyUI"
 rm -rf /workspace/ComfyUI
 
@@ -15,25 +19,28 @@ apt -y upgrade
 
 echo "Creating and activating venv"
 cd ComfyUI
-python -m venv /workspace/venv
+python3 -m venv /workspace/venv
 source /workspace/venv/bin/activate
+
+echo "Upgrading pip and setuptools in the venv"
+pip install --upgrade pip setuptools
 
 echo "Installing Torch"
 pip install --no-cache-dir torch==2.1.2+cu118 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 echo "Installing xformers"
-pip3 install --no-cache-dir xformers==0.0.23.post1+cu118 --index-url https://download.pytorch.org/whl/cu118
+pip install --no-cache-dir xformers==0.0.23.post1+cu118 --index-url https://download.pytorch.org/whl/cu118
 
 echo "Installing ComfyUI"
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 
 echo "Installing ComfyUI Manager"
 git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 cd custom_nodes/ComfyUI-Manager
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 
 echo "Installing RunPod Serverless dependencies"
-pip3 install huggingface_hub runpod
+pip install huggingface_hub runpod
 
 echo "Downloading SD 1.5 base model"
 cd /workspace/ComfyUI/models/checkpoints
