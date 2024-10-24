@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+echo "Installing Ubuntu updates"
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get -y upgrade
+
 echo "Upgrading pip and setuptools globally"
 python3 -m pip install --upgrade pip setuptools
 
@@ -12,10 +20,6 @@ rm -rf /workspace/venv
 echo "Cloning ComfyUI repo to /workspace"
 cd /workspace
 git clone --depth=1 https://github.com/comfyanonymous/ComfyUI.git
-
-echo "Installing Ubuntu updates"
-apt update
-apt -y upgrade
 
 echo "Creating and activating venv"
 cd ComfyUI
@@ -31,7 +35,7 @@ pip install --no-cache-dir torch==2.1.2+cu118 torchvision torchaudio --index-url
 echo "Installing xformers"
 pip install --no-cache-dir xformers==0.0.23.post1+cu118 --index-url https://download.pytorch.org/whl/cu118
 
-echo "Installing ComfyUI"
+echo "Installing ComfyUI requirements"
 pip install -r requirements.txt
 
 echo "Installing ComfyUI Manager"
